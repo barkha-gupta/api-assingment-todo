@@ -28,11 +28,15 @@ app.post("/v1/tasks", async(req, res) => {
     try {
         const todos= await Todo.find();
         const todolength= todos.length;
+        let maxId= 0;
+        for(let i=0;i<todolength;i++){
+            maxId= Math.max(maxId, todos[i].id)
+        }
         const {title, isComplete} = req.body;
         const todo= await Todo.create({
             title, 
             isComplete,
-            id: todolength + 1
+            id: maxId + 1
         })
         res.status(201).json({
             todoId : todo.id
